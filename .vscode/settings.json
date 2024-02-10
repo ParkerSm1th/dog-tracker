@@ -1,0 +1,55 @@
+{
+  "[css]": {
+    "editor.tabSize": 2,
+  },
+  "cSpell.customDictionaries": {
+    "project-words": {
+      "name": "project-words",
+      "path": "${workspaceRoot}/../scripts/allowed-spelling-list.txt",
+      "description": "Words used in this project",
+      "addWords": true,
+    },
+    "custom": true, // Enable the `custom` dictionary
+  },
+  // "It is recommended that either ESLint or cspell checks a file, but not both."
+  // https://www.npmjs.com/package/@cspell/eslint-plugin
+  "cSpell.enableFiletypes": [
+    "!javascript",
+    "!typescript",
+  ],
+  "css.format.spaceAroundSelectorSeparator": true,
+  "editor.codeActionsOnSave": [
+    "source.fixAll.eslint",
+  ],
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.options": {
+    "reportUnusedDisableDirectives": "error",
+  },
+  "eslint.rules.customizations": [
+    { "rule": "*", "severity": "warn" },
+  ],
+  "editor.defaultFormatter": "dprint.dprint",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.wordWrapColumn": 100,
+  "eslint.format.enable": true,
+  "eslint.workingDirectories": [
+    "./app",
+    "./server",
+  ],
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "git.allowForcePush": true,
+  "git.inputValidationSubjectLength": 100,
+  "git.inputValidationLength": 100,
+  // "gitlens.autolinks": [
+  //   {
+  //     "prefix": "sc-",
+  //     "url": "https://app.shortcut.com/heyautofill/story/<num>/",
+  //   },
+  // ],
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "scss.format.spaceAroundSelectorSeparator": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+}
