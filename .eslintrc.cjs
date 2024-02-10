@@ -79,7 +79,6 @@ module.exports = {
     'plugin:jest-formatting/recommended',
     'plugin:no-unsanitized/DOM',
     // https://typescript-eslint.io/linting/troubleshooting/formatting#suggested-usage---prettier
-    'prettier',
   ],
   ignorePatterns: [
     'node_modules',
