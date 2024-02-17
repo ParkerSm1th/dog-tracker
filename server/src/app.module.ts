@@ -11,6 +11,10 @@ import {
   PassportModule,
 } from '@nestjs/passport';
 import * as Joi from 'joi';
+
+import {
+  APP_GUARD,
+} from '@nestjs/core';
 import {
   AppController,
 } from './app.controller';
@@ -18,21 +22,17 @@ import {
   AppService,
 } from './app.service';
 import {
-  AuthController,
-} from './auth/auth.controller';
-import {
   AuthModule,
 } from './auth/auth.module';
+import {
+  JwtAuthGuard,
+} from './auth/jwt-auth.guard';
 import {
   PrismaModule,
 } from './prisma/prisma.module';
 import {
   PrismaService,
 } from './prisma/prisma.service';
-import {
-  GoogleStrategy,
-  JwtStrategy,
-} from './strategies';
 
 @Module({
   imports: [
@@ -43,7 +43,7 @@ import {
         GOOGLE_CLIENT_ID: Joi.string().required(),
         GOOGLE_CLIENT_SECRET: Joi.string().required(),
         GOOGLE_CALLBACK_URL: Joi.string().required(),
-        APP_JWT_SECRET: Joi.string().required(),
+        CLERK_ISSUER_URL: Joi.string().required(),
       }),
     }),
     PassportModule,
@@ -54,6 +54,9 @@ import {
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy, JwtStrategy, PrismaService],
+  providers: [AppService, PrismaService, {
+    provide: APP_GUARD,
+    useClass: JwtAuthGuard,
+  }],
 })
 export class AppModule {}

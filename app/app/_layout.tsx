@@ -1,59 +1,74 @@
-/* eslint-disable react/no-multi-comp */
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {
-  useFonts,
-} from 'expo-font';
+  ClerkProvider,
+  useAuth,
+} from '@clerk/clerk-expo';
 import {
-  Stack,
+  Slot,
+  useRouter,
+  useSegments,
 } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import * as SecureStore from 'expo-secure-store';
 import {
   useEffect,
 } from 'react';
+import {
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const tokenCache = {
+  async getToken(token: string) {
+    try {
+      return SecureStore.getItemAsync(token);
+    } catch (error) {
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (error) {
+      throw new Error('Could not save token');
+    }
+  },
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    // eslint-disable-next-line global-require, @typescript-eslint/naming-convention
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) { throw error; }
-  }, [error]);
+const InitialLayout = () => {
+  const { isLoaded, isSignedIn } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (!isLoaded) {
+      return;
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+    const inProtectedRoute = segments[0] === '(auth)';
 
-  return <RootLayoutNav />;
-}
+    if (isSignedIn && !inProtectedRoute) {
+      router.push('/home');
+    } else if (!isSignedIn) {
+      router.push('/login');
+    }
+  }, [isSignedIn, isLoaded, router, segments]);
 
-function RootLayoutNav() {
-  return (
-    <Stack>
-      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-    </Stack>
-  );
-}
+  return <Slot />;
+};
+
+const RootLayoutNav = () => (
+  <ClerkProvider
+    publishableKey={CLERK_PUBLISHABLE_KEY!}
+    tokenCache={tokenCache}
+  >
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar
+        backgroundColor={'#000'}
+        barStyle={'dark-content'}
+      />
+      <InitialLayout />
+    </SafeAreaView>
+  </ClerkProvider>
+);
+
+export default RootLayoutNav;

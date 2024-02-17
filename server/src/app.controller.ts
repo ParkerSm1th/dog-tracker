@@ -1,18 +1,25 @@
 import {
   Controller,
   Get,
+  UseGuards,
 } from '@nestjs/common';
 import {
   AppService,
   HelloReturn,
 } from './app.service';
 import {
+  JwtAuthGuard,
+} from './auth/jwt-auth.guard';
+import {
   Public,
+  User,
 } from './decorators';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+  ) {}
 
   @Public()
   @Get()
@@ -21,7 +28,10 @@ export class AppController {
   }
 
   @Get('test')
-  getTest(): string {
+  getTest(@User() user: {
+    userId: string;
+  }): string {
+    console.log(user);
     return 'test';
   }
 }
