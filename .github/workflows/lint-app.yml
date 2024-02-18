@@ -1,9 +1,6 @@
 name: Lint App
 
 on: [pull_request]
-defaults:
-  run:
-    working-directory: ./app
 
 jobs:
   lint:
