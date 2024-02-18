@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  UseGuards,
 } from '@nestjs/common';
 import {
   ClerkUser,
@@ -10,9 +9,6 @@ import {
   AppService,
   HelloReturn,
 } from './app.service';
-import {
-  JwtAuthGuard,
-} from './auth/jwt-auth.guard';
 import {
   Public,
   User,

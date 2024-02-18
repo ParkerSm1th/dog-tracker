@@ -14,6 +14,7 @@ const HomePage = () => {
   const fetchDataFromExternalResource = async () => {
     const token = await getToken();
     // fetch your data
+    // eslint-disable-next-line no-console
     console.log(token);
   };
 

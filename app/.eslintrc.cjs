@@ -27,6 +27,7 @@ module.exports = {
     '/dist',
     '*.config.js',
     '*.d.ts',
+    '*.cjs',
   ],
   overrides: [
     // Typescript-specific rules that don't apply to our .[mc]js files.

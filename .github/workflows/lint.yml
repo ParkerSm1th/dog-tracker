@@ -1,0 +1,33 @@
+name: PR Checks
+
+on: [pull_request]
+
+jobs:
+  lint:
+    name: Lint Server & App
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install Common Deps
+        run: npm i --ignore-scripts
+      - name: Install Server Deps
+        run: npm i --ignore-scripts
+        working-directory: ./server
+      - name: Install App Deps
+        run: npm i --ignore-scripts
+        working-directory: ./app
+      - name: Lint Server
+        run: npm run lint
+        working-directory: ./server
+      - name: Lint App
+        if: always()
+        run: npm run lint
+        working-directory: ./app

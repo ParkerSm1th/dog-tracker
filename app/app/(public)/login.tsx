@@ -106,7 +106,7 @@ const Login = () => {
     }
   };
 
-  const onResetPress = async () => {
+  const onResetPress = () => {
     if (!isLoaded || !isSignupLoaded) {
       return;
     }
