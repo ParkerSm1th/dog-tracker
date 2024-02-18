@@ -79,7 +79,6 @@ module.exports = {
     'plugin:jest-formatting/recommended',
     'plugin:no-unsanitized/DOM',
     // https://typescript-eslint.io/linting/troubleshooting/formatting#suggested-usage---prettier
-    'prettier',
   ],
   ignorePatterns: [
     'node_modules',
@@ -246,6 +245,9 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
+    parserOptions: {
+      project: ['./tsconfig.json'], // Specify it only for TypeScript files
+    },
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
@@ -255,7 +257,6 @@ module.exports = {
     'jest-formatting',
     'modules-newlines',
     'unused-imports',
-    'magical',
   ],
   root: true,
   rules: {
@@ -351,13 +352,11 @@ module.exports = {
     'no-redeclare': 'error',
     'no-restricted-properties': [
       'error',
-      ...restrictedPropertiesRules,
     ],
     // disallow certain syntax forms
     // https://eslint.org/docs/rules/no-restricted-syntax
     'no-restricted-syntax': [
       'error',
-      ...noRestrictedSyntaxRules,
     ],
     'no-use-before-define': 'off', // Replaced with TS version.
     'no-void': ['error', { allowAsStatement: true }],

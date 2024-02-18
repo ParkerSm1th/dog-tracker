@@ -1,5 +1,8 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: ['./app/tsconfig.json'], // Specify it only for TypeScript files
+  },
   env: {
     browser: true,
     es2020: true,
@@ -8,11 +11,9 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:@cspell/recommended',
     'plugin:jest/recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
-    'plugin:storybook/recommended',
     '../.eslintrc.cjs',
   ],
   globals: {
@@ -24,13 +25,14 @@ module.exports = {
     '/artifacts',
     '/build',
     '/dist',
-    '/storybook-static',
+    '*.config.js',
+    '*.d.ts',
   ],
   overrides: [
     // Typescript-specific rules that don't apply to our .[mc]js files.
     {
       files: [
-        'src/**/*.ts*',
+        'app/**/*.ts*',
       ],
       rules: {
         '@typescript-eslint/semi': ['error'],
@@ -42,7 +44,7 @@ module.exports = {
     // TSX files
     {
       files: [
-        'src/**/*.tsx',
+        'app/**/*.tsx',
       ],
       rules: {
         'max-lines': ['error', 210],
@@ -53,7 +55,7 @@ module.exports = {
     // Storybook stories
     {
       files: [
-        'src/**/*.stories.tsx',
+        'app/**/*.stories.tsx',
       ],
       rules: {
         'react/function-component-definition': 'off',
@@ -65,8 +67,8 @@ module.exports = {
     // Storybook stories and unit tests
     {
       files: [
-        'src/**/*.stories.tsx',
-        'src/**/*/*.unit.test.tsx',
+        'app/**/*.stories.tsx',
+        'app/**/*/*.unit.test.tsx',
       ],
       rules: {
         'max-lines': 'off',
@@ -76,7 +78,7 @@ module.exports = {
     // All tests
     {
       files: [
-        'src/**/*.test.ts',
+        'app/**/*.test.ts',
       ],
       env: {
         jest: true,
@@ -92,7 +94,7 @@ module.exports = {
     // UI tests
     {
       files: [
-        'src/**/*.ui.test.ts',
+        'app/**/*.ui.test.ts',
       ],
       globals: {
         driver: true,
@@ -109,12 +111,11 @@ module.exports = {
 
     // Background files
     {
-      files: ['src/background/**/*'],
+      files: ['app/background/**/*'],
       rules: {
         'no-restricted-imports': 'off',
         'no-restricted-properties': [
           'error',
-          ...restrictedPropertiesRules,
           {
             message:
               'There is no access to `document` available in MV3 extensions since the background runs in a Service Worker',
@@ -128,7 +129,6 @@ module.exports = {
         ],
         'no-restricted-syntax': [
           'error',
-          ...noRestrictedSyntaxRules,
           {
             selector:
               'CallExpression[callee.object.property.name="tabs"] > MemberExpression[property.name="sendMessage"]',
@@ -147,7 +147,7 @@ module.exports = {
     // store-url.e2e.test.ts
     {
       files: [
-        'src/e2e-tests/extension-stores/store-url.e2e.test.ts',
+        'app/e2e-tests/extension-stores/store-url.e2e.test.ts',
       ],
       rules: {
         // @jest-environment-options can't be parsed and eslint comments can't come before the Jest
@@ -158,11 +158,10 @@ module.exports = {
 
     // Content scripts
     {
-      files: ['src/content-scripts/**/*'],
+      files: ['app/content-scripts/**/*'],
       rules: {
         'no-restricted-syntax': [
           'error',
-          ...noRestrictedSyntaxRules,
           {
             selector:
               'CallExpression[callee.name="getValueFromTabState"] Identifier[name="dropdown"]',
@@ -174,15 +173,12 @@ module.exports = {
     },
   ],
   plugins: [
-    '@cspell',
     '@typescript-eslint',
     'justinanastos',
     'import',
     'compat',
     'react',
-    'jest',
     'react-hooks',
-    '@emotion',
   ],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -229,7 +225,6 @@ module.exports = {
     'no-proto': 'error',
     'no-restricted-syntax': [
       'error',
-      ...noRestrictedSyntaxRules,
     ],
     'no-shadow': 'off',
     'no-shadow-restricted-names': 'error',
@@ -258,7 +253,6 @@ module.exports = {
     'react/boolean-prop-naming': 'error',
     'react/display-name': ['warn', { ignoreTranspilerName: false }],
     'react/forbid-component-props': ['error', { forbid: ['class'] }],
-    'react/function-component-definition': 'error',
     'react/jsx-handler-names': 'error',
     'react/jsx-key': ['error', { checkFragmentShorthand: true }],
     'react/jsx-max-props-per-line': ['error', { maximum: 1, when: 'multiline' }],
@@ -275,7 +269,6 @@ module.exports = {
     'react/no-danger': 'warn',
     'react/no-did-mount-set-state': 'error',
     'react/no-did-update-set-state': 'error',
-    'react/no-multi-comp': 'error',
     'react/no-unescaped-entities': 'off',
     'react/no-unknown-property': ['error', { ignore: ['css'] }],
     'react/no-unstable-nested-components': 'error',
@@ -299,7 +292,9 @@ module.exports = {
     targets: ['last 2 versions'],
     polyfills: ['fetch', 'Promise'],
     'import/resolver': {
-      typescript: {},
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
     react: {
       createClass: 'createReactClass', // Regex for Component Factory to use,
