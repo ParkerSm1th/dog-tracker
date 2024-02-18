@@ -128,6 +128,7 @@ const Login = () => {
               value={verificationCode}
               onChangeText={setVerificationCode}
               style={styles.inputField}
+              inputMode='numeric'
             />
 
             <Button onPress={onVerifyPress} title='Verify Code' color={'#6c47ff'} />

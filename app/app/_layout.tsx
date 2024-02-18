@@ -3,6 +3,10 @@ import {
   useAuth,
 } from '@clerk/clerk-expo';
 import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import {
   Slot,
   useRouter,
   useSegments,
@@ -15,6 +19,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import '../global.css';
 
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const tokenCache = {
@@ -56,19 +61,25 @@ const InitialLayout = () => {
   return <Slot />;
 };
 
-const RootLayoutNav = () => (
-  <ClerkProvider
-    publishableKey={CLERK_PUBLISHABLE_KEY!}
-    tokenCache={tokenCache}
-  >
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar
-        backgroundColor={'#000'}
-        barStyle={'dark-content'}
-      />
-      <InitialLayout />
-    </SafeAreaView>
-  </ClerkProvider>
-);
+const RootLayoutNav = () => {
+  const queryClient = new QueryClient();
+
+  return (
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY!}
+      tokenCache={tokenCache}
+    >
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar
+            backgroundColor={'#000'}
+            barStyle={'dark-content'}
+          />
+          <InitialLayout />
+        </SafeAreaView>
+      </QueryClientProvider>
+    </ClerkProvider>
+  );
+};
 
 export default RootLayoutNav;
