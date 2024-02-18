@@ -24,6 +24,8 @@ jobs:
           node-version: 16
       - name: Install Deps
         run: npm i --ignore-scripts
+      - name: Where Am I
+        run: ls
       - name: Lint
         run: npm run lint
         working-directory: ./app
