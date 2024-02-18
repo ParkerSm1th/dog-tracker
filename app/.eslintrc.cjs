@@ -25,6 +25,8 @@ module.exports = {
     '/artifacts',
     '/build',
     '/dist',
+    '*.config.js',
+    '*.d.ts',
   ],
   overrides: [
     // Typescript-specific rules that don't apply to our .[mc]js files.
