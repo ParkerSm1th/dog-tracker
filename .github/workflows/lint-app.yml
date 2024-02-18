@@ -19,8 +19,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16
-      - name: Install Deps
+      - name: Install Common Deps
         run: npm i --ignore-scripts
+      - name: Install App Deps
+        run: npm i --ignore-scripts
+        working-directory: ./app
       - name: Where Am I
         run: ls
       - name: Lint
