@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "npx eslint --max-warnings 0 --ext=.js,.cjs,.tsx,.ts,.mjs ."
+    "lint": "npx eslint --max-warnings 0 --ext=.js,.cjs,.tsx,.ts,.mjs . -c ./.eslintrc.cjs"
   },
   "jest": {
     "preset": "jest-expo"
