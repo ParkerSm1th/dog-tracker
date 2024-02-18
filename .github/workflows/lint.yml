@@ -1,14 +1,11 @@
-name: Lint App
+name: PR Checks
 
 on: [pull_request]
 
 jobs:
   lint:
+    name: Lint Server & App
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -21,11 +18,16 @@ jobs:
           node-version: 16
       - name: Install Common Deps
         run: npm i --ignore-scripts
+      - name: Install Server Deps
+        run: npm i --ignore-scripts
+        working-directory: ./server
       - name: Install App Deps
         run: npm i --ignore-scripts
         working-directory: ./app
-      - name: Where Am I
-        run: ls
-      - name: Lint
+      - name: Lint Server
+        run: npm run lint
+        working-directory: ./server
+      - name: Lint App
+        if: always()
         run: npm run lint
         working-directory: ./app
