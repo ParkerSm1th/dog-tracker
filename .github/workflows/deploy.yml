@@ -16,6 +16,6 @@ jobs:
         run: ls
       - name: Apply all pending migrations to the database
         working-directory: server
-        run: npx prisma migrate deploy --schema './server/prisma/schema.prisma'
+        run: npx prisma migrate deploy --schema
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
