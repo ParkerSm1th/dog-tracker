@@ -40,9 +40,6 @@ import {
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        GOOGLE_CLIENT_ID: Joi.string().required(),
-        GOOGLE_CLIENT_SECRET: Joi.string().required(),
-        GOOGLE_CALLBACK_URL: Joi.string().required(),
         CLERK_ISSUER_URL: Joi.string().required(),
       }),
     }),

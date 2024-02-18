@@ -4,6 +4,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ClerkUser,
+} from 'common/models/clerk';
+import {
   AppService,
   HelloReturn,
 } from './app.service';
@@ -24,14 +27,17 @@ export class AppController {
   @Public()
   @Get()
   getHello(): HelloReturn {
+    console.log('hi');
     return this.appService.getHello();
   }
 
   @Get('test')
-  getTest(@User() user: {
-    userId: string;
-  }): string {
+  getTest(@User() user: ClerkUser): {
+    user: ClerkUser;
+  } {
     console.log(user);
-    return 'test';
+    return {
+      user,
+    };
   }
 }

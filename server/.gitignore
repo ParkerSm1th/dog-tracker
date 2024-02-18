@@ -73,3 +73,6 @@ artifacts/
 
 # Script data
 scripts/data/
+
+# Supabase
+supabase/
