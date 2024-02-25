@@ -3,7 +3,7 @@ import {
 } from '@nestjs/common';
 import {
   PrismaService,
-} from 'src/prisma/prisma.service';
+} from '../prisma/prisma.service';
 import {
   CreateUserDto,
 } from './dto/create-user.dto';

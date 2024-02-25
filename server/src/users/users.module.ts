@@ -3,10 +3,10 @@ import {
 } from '@nestjs/common';
 import {
   PrismaModule,
-} from 'src/prisma/prisma.module';
+} from '../prisma/prisma.module';
 import {
   PrismaService,
-} from 'src/prisma/prisma.service';
+} from '../prisma/prisma.service';
 import {
   UsersController,
 } from './users.controller';

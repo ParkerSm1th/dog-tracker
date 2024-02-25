@@ -13,7 +13,7 @@ import {
 import {
   HTTPUser,
   Public,
-} from 'src/decorators';
+} from '../decorators';
 import {
   CreateUserDto,
 } from './dto/create-user.dto';
