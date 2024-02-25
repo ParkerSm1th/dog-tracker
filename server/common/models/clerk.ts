@@ -12,4 +12,5 @@ export type ClerkUser = Partial<{
 
 export type ClerkJWT = {
   sub: string;
+  image?: string;
 };
