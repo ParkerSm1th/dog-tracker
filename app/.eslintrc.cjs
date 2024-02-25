@@ -184,6 +184,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    'implicit-arrow-linebreak': 'off',
     // Want this enabled but too many existing violations to fix now.
     '@typescript-eslint/no-shadow': 'off',
     '@typescript-eslint/no-unused-vars': ['error', {
