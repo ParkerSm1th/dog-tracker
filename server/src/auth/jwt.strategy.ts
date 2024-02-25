@@ -23,7 +23,7 @@ import {
 } from 'passport-jwt';
 import {
   UsersService,
-} from 'src/users/users.service';
+} from '../users/users.service';
 
 dotenv.config();
 

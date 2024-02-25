@@ -3,7 +3,7 @@ import {
 } from '@nestjs/common';
 import {
   UsersService,
-} from 'src/users/users.service';
+} from '../users/users.service';
 import {
   JwtAuthGuard,
 } from './jwt-auth.guard';
