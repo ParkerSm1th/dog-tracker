@@ -1,4 +1,8 @@
 import {
+  useCurrentUser,
+  useSignup,
+} from '@/hooks/user';
+import {
   useAuth,
 } from '@clerk/clerk-expo';
 import React from 'react';
@@ -9,18 +13,23 @@ import {
 } from 'react-native';
 
 const HomePage = () => {
-  const { getToken, signOut } = useAuth();
+  const { signOut } = useAuth();
 
-  const fetchDataFromExternalResource = async () => {
-    const token = await getToken();
-    // fetch your data
-    // eslint-disable-next-line no-console
-    console.log(token);
-  };
-
+  const { user, isLoading, refetch } = useCurrentUser();
+  const { mutateAsync } = useSignup();
   return (
     <View style={styles.container}>
-      <Text onPress={fetchDataFromExternalResource}>home</Text>
+      {isLoading ? <Text>Loading</Text> : <Text>{JSON.stringify(user)}</Text>}
+      <Text onPress={() => refetch()}>fetch</Text>
+      <Text
+        onPress={async () => {
+          await mutateAsync({
+            firstName: 'Parker 2',
+          });
+        }}
+      >
+        Basic Mutation
+      </Text>
       <Text onPress={() => signOut()}>sign out</Text>
     </View>
   );
