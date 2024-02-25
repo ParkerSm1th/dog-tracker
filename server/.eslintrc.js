@@ -20,5 +20,11 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    'no-restricted-imports': ['error', {
+      patterns: [{
+        group: ['src/*'],
+        message: 'Do not use absolute paths for imports, compiled server code will fail',
+      }],
+    }],
   },
 };
