@@ -33,6 +33,9 @@ import {
 import {
   PrismaService,
 } from './prisma/prisma.service';
+import {
+  UsersModule,
+} from './users/users.module';
 
 @Module({
   imports: [
@@ -48,6 +51,7 @@ import {
       global: true,
     }),
     PrismaModule,
+    UsersModule,
     AuthModule,
   ],
   controllers: [AppController],

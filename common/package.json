@@ -1,0 +1,8 @@
+{
+  "name": "@dog-tracker/common",
+  "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "description": "Dog Tracker Common Library"
+}

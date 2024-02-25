@@ -10,8 +10,8 @@ import {
   HelloReturn,
 } from './app.service';
 import {
+  HTTPUser,
   Public,
-  User,
 } from './decorators';
 
 @Controller()
@@ -28,7 +28,7 @@ export class AppController {
   }
 
   @Get('test')
-  getTest(@User() user: ClerkUser): {
+  getTest(@HTTPUser() user: ClerkUser): {
     user: ClerkUser;
   } {
     console.log(user);

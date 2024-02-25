@@ -1,4 +1,7 @@
 import {
+  User,
+} from '@common/models';
+import {
   Injectable,
 } from '@nestjs/common';
 import {
@@ -9,7 +12,6 @@ import {
 } from '@nestjs/passport';
 import {
   ClerkJWT,
-  ClerkUser,
 } from 'common/models/clerk';
 import * as dotenv from 'dotenv';
 import {
@@ -19,12 +21,15 @@ import {
   ExtractJwt,
   Strategy,
 } from 'passport-jwt';
+import {
+  UsersService,
+} from 'src/users/users.service';
 
 dotenv.config();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService, private userService: UsersService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -43,11 +48,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     console.log('JwtStrategy initialized');
   }
 
-  validate(payload: ClerkJWT): ClerkUser {
-    // This one is really useful to check the jwt payload!
-    console.log('Validating payload:', payload);
-    return {
-      id: payload.sub,
-    };
+  async validate(payload: ClerkJWT): Promise<User> {
+    const { sub } = payload;
+    const user = await this.userService.findOne(sub);
+    return user;
   }
 }
