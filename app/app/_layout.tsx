@@ -50,11 +50,10 @@ const InitialLayout = () => {
     }
 
     const inProtectedRoute = segments[0] === '(auth)';
-
     if (isSignedIn && !inProtectedRoute) {
       router.push('/home');
-    } else if (!isSignedIn) {
-      router.push('/login');
+    } else if (!isSignedIn && (inProtectedRoute || segments[0] === '+not-found')) {
+      router.push('/start');
     }
   }, [isSignedIn, isLoaded, router, segments]);
 
@@ -70,10 +69,9 @@ const RootLayoutNav = () => {
       tokenCache={tokenCache}
     >
       <QueryClientProvider client={queryClient}>
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#141414' }}>
           <StatusBar
-            backgroundColor={'#000'}
-            barStyle={'dark-content'}
+            barStyle={'light-content'}
           />
           <InitialLayout />
         </SafeAreaView>

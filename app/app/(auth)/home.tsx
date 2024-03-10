@@ -19,6 +19,7 @@ const HomePage = () => {
   const { mutateAsync } = useSignup();
   return (
     <View style={styles.container}>
+      <Text className='text-white'>Authenticated Home</Text>
       {isLoading ? <Text>Loading</Text> : <Text>{JSON.stringify(user)}</Text>}
       <Text onPress={() => refetch()}>fetch</Text>
       <Text

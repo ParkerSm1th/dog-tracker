@@ -32,7 +32,7 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 100,
-  // "eslint.format.enable": true,
+  "eslint.format.enable": false,
   "eslint.workingDirectories": [
     "./app",
     "./server",
