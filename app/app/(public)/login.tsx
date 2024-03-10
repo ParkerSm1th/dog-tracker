@@ -6,16 +6,25 @@ import type {
   PhoneCodeFactor,
   SignInFirstFactor,
 } from '@clerk/types';
+import clsx from 'clsx';
+import {
+  useRouter,
+} from 'expo-router';
 import React, {
+  useMemo,
   useState,
 } from 'react';
 import {
-  Button,
-  StyleSheet,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import Animated, {
+  FadeInRight,
+} from 'react-native-reanimated';
 
 const Login = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -26,9 +35,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [pendingVerification, setPendingVerification] = useState(false);
   const [signingUp, setSigningUp] = useState(false);
+  const router = useRouter();
+
+  const nextDisabled = useMemo(() => {
+    if (loading) {
+      return true;
+    }
+    if (pendingVerification) {
+      return verificationCode.length < 6;
+    }
+    return phoneNumber.length < 10;
+  }, [loading, pendingVerification, phoneNumber, verificationCode]);
 
   const onSignInPress = async () => {
-    if (!isLoaded || !isSignupLoaded) {
+    if (!isLoaded || !isSignupLoaded || nextDisabled) {
       return;
     }
     setLoading(true);
@@ -76,7 +96,7 @@ const Login = () => {
     }
   };
 
-  const onVerifyPress = async () => {
+  const onVerifyPress = async (value?: string) => {
     if (!isLoaded || !isSignupLoaded) {
       return;
     }
@@ -84,14 +104,14 @@ const Login = () => {
     try {
       if (signingUp) {
         await signUp.attemptPhoneNumberVerification({
-          code: verificationCode,
+          code: value ?? verificationCode,
         });
 
         await setSignUpActive({ session: signUp.createdSessionId });
         return;
       }
       const completeSignIn = await signIn.attemptFirstFactor({
-        code: verificationCode,
+        code: value ?? verificationCode,
         strategy: 'phone_code',
       });
 
@@ -106,72 +126,91 @@ const Login = () => {
     }
   };
 
-  const onResetPress = () => {
-    if (!isLoaded || !isSignupLoaded) {
-      return;
-    }
-    setPendingVerification(false);
-    setVerificationCode('');
-    setPhoneNumber('');
-  };
-
   return (
-    <View style={styles.container}>
-      <Spinner visible={loading} />
-
-      {pendingVerification
-        ? (
-          <>
-            <TextInput
-              autoCapitalize='none'
-              placeholder='12345'
-              value={verificationCode}
-              onChangeText={setVerificationCode}
-              style={styles.inputField}
-              inputMode='numeric'
-            />
-
-            <Button onPress={onVerifyPress} title='Verify Code' color={'#6c47ff'} />
-            <Button onPress={onResetPress} title='Re-enter phone number' color={'#6c47ff'} />
-          </>
-        )
-        : (
-          <>
-            <TextInput
-              autoCapitalize='none'
-              placeholder='(555-555-5555)'
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-              style={styles.inputField}
-              inputMode='tel'
-            />
-
-            <Button onPress={onSignInPress} title='Login' color={'#6c47ff'} />
-          </>
-        )}
-    </View>
+    <Animated.View entering={FadeInRight}>
+      <KeyboardAvoidingView behavior='padding'>
+        <View className='pt-40 mx-6 flex flex-col justify-between h-full pb-16'>
+          <View className='flex flex-col gap-2'>
+            <Text className='text-4xl text-white font-bold w-[320px]'>
+              {pendingVerification
+                ? 'Enter your verification code'
+                : 'Let\'s start with a phone number'}
+            </Text>
+          </View>
+          <View className='gap-4'>
+            {pendingVerification
+              ? (
+                <TextInput
+                  autoCapitalize='none'
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus
+                  value={verificationCode}
+                  onChangeText={(value) => {
+                    setVerificationCode(value);
+                    if (value.length === 6) {
+                      onVerifyPress(value);
+                    }
+                  }}
+                  inputMode='numeric'
+                  autoComplete='sms-otp'
+                  key='verificationCode'
+                  className='bg-[#272727] rounded-xl py-2 pb-2 text-white text-center text-2xl'
+                />
+              )
+              : (
+                <TextInput
+                  autoCapitalize='none'
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  inputMode='tel'
+                  autoComplete='tel'
+                  key='phone'
+                  className='bg-[#272727] rounded-xl py-2 pb-2 text-white text-center text-2xl'
+                />
+              )}
+            <View className='flex flex-row w-full justify-between gap-2'>
+              <TouchableOpacity
+                onPress={() => router.push('/start')}
+                className='bg-[#272727] rounded-xl font-bold flex items-center w-24'
+              >
+                <Text className='p-2 py-4 text-center text-white w-full text-xl font-bold'>
+                  Back
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={pendingVerification
+                  ? () => {
+                    if (nextDisabled) {
+                      return;
+                    }
+                    // Must separate this out for auto-submit
+                    onVerifyPress();
+                  }
+                  : onSignInPress}
+                className={clsx('bg-[#272727] rounded-xl font-bold flex items-center w-24', {
+                  'opacity-50': nextDisabled,
+                })}
+              >
+                {loading
+                  ? (
+                    <View className='items-center pt-4'>
+                      <ActivityIndicator color='white' />
+                    </View>
+                  )
+                  : (
+                    <Text className='p-2 py-4 text-center text-white w-full text-xl font-bold'>
+                      Next
+                    </Text>
+                  )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#6c47ff',
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  button: {
-    margin: 8,
-    alignItems: 'center',
-  },
-});
 
 export default Login;
