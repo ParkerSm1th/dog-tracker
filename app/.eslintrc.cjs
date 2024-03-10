@@ -48,7 +48,6 @@ module.exports = {
         'app/**/*.tsx',
       ],
       rules: {
-        'max-lines': ['error', 210],
         'react/no-unknown-property': ['error', { ignore: ['css'] }],
       },
     },
@@ -62,17 +61,6 @@ module.exports = {
         'react/function-component-definition': 'off',
         'react/no-multi-comp': 'off',
         '@typescript-eslint/consistent-type-assertions': 'off',
-      },
-    },
-
-    // Storybook stories and unit tests
-    {
-      files: [
-        'app/**/*.stories.tsx',
-        'app/**/*/*.unit.test.tsx',
-      ],
-      rules: {
-        'max-lines': 'off',
       },
     },
 
