@@ -1,0 +1,9 @@
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, id:34F86CC3-1A81-4F36-ACE1-2CE5E96F3A8D, OS:17.2, name:iPhone 15 Pro Max }
+{ platform:iOS Simulator, id:34F86CC3-1A81-4F36-ACE1-2CE5E96F3A8D, OS:17.2, name:iPhone 15 Pro Max }
+** BUILD FAILED **
+
+
+The following build commands failed:
+	PhaseScriptExecution [CP-User]\ Generate\ app.manifest\ for\ expo-updates /Users/parker/Library/Developer/Xcode/DerivedData/app-cyplukuzmcxiswbiugxkkpmsonrp/Build/Intermediates.noindex/Pods.build/Release-iphonesimulator/EXUpdates.build/Script-46EB2E0001D580.sh (in target 'EXUpdates' from project 'Pods')
+(1 failure)
