@@ -108,6 +108,7 @@ const Login = () => {
         });
 
         await setSignUpActive({ session: signUp.createdSessionId });
+        router.push('/info');
         return;
       }
       const completeSignIn = await signIn.attemptFirstFactor({

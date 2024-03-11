@@ -5,9 +5,11 @@ import {
 import {
   useAuth,
 } from '@clerk/clerk-expo';
+import {
+  Link,
+} from 'expo-router';
 import React from 'react';
 import {
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -18,29 +20,28 @@ const HomePage = () => {
   const { user, isLoading, refetch } = useCurrentUser();
   const { mutateAsync } = useSignup();
   return (
-    <View style={styles.container}>
+    <View className='text-white p-4'>
       <Text className='text-white'>Authenticated Home</Text>
-      {isLoading ? <Text>Loading</Text> : <Text>{JSON.stringify(user)}</Text>}
-      <Text onPress={() => refetch()}>fetch</Text>
+      {isLoading
+        ? <Text>Loading</Text>
+        : <Text className='text-white'>{JSON.stringify(user)}</Text>}
+      <Text className='text-white' onPress={() => refetch()}>fetch</Text>
       <Text
+        className='text-white'
         onPress={async () => {
           await mutateAsync({
-            firstName: 'Parker 2',
+            firstName: 'Parker',
           });
         }}
       >
         Basic Mutation
       </Text>
-      <Text onPress={() => signOut()}>sign out</Text>
+      <Link href='/info' className='text-white'>
+        Onboarding
+      </Link>
+      <Text className='text-white' onPress={() => signOut()}>sign out</Text>
     </View>
   );
 };
 
 export default HomePage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-});
