@@ -23,7 +23,6 @@ export class AppController {
   @Public()
   @Get()
   getHello(): HelloReturn {
-    console.log('hi');
     return this.appService.getHello();
   }
 
@@ -31,7 +30,6 @@ export class AppController {
   getTest(@HTTPUser() user: ClerkUser): {
     user: ClerkUser;
   } {
-    console.log(user);
     return {
       user,
     };

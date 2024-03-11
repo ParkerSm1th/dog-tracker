@@ -32,7 +32,7 @@ export const useSignup = () => {
       });
     },
     authMutationFn: (api, variables) =>
-      api.patch('users', {
+      api.post('users', {
         body: JSON.stringify(variables),
       }).json<User>(),
   });

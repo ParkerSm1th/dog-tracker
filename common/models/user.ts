@@ -10,3 +10,10 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface CreateUserDto {
+  firstName: string;
+  id: string;
+  lastName: string;
+  phoneNumber: string;
+}
